@@ -1,0 +1,3 @@
+package proto;
+option go_package = "https://github.com/MalteBlackN/basicGrpc.git";
+
