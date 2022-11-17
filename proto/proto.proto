@@ -2,5 +2,5 @@ syntax = "proto3";
 
 
 package basicGrpc;
-option go_package = "https://github.com/MalteBlackN/basicGrpc.git";
+option go_package = "github.com/MalteBlackN/basicGrpc";
 

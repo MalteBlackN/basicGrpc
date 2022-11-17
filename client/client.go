@@ -3,10 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"google.golang.org/grpc"
 	"log"
 
-    "github.com/MalteBlackN/basicGrpc/proto"
+	t "time"
+
+	"github.com/MalteBlackN/basicGrpc/proto"
+
+	"google.golang.org/grpc"
 )
 
 func main() {
@@ -21,19 +24,22 @@ func main() {
 	defer conn.Close()
 
 	//  Create new Client from generated gRPC code from proto
-	c := myPackage.NewGetXXXClient(conn)
- 
-	SendRequest(c)
+	c := time.NewGetCurrentTimeClient(conn)
+
+	for {
+		SendGetTimeRequest(c)
+		t.Sleep(5 * t.Second)
+	}
 }
 
-func SendRequest(c myPackage.XXXClient) {
-    // Between the curly brackets are nothing, because the .proto file expects no input.
-	message := myPackage.somethingsomethingRequest{}
+func SendGetTimeRequest(c time.GetCurrentTimeClient) {
+	// Between the curly brackets are nothing, because the .proto file expects no input.
+	message := time.GetTimeRequest{}
 
-    response, err := c.somethingsomething(context.Background(), &message)
-    if err != nil {
-        log.Fatalf("Error when calling XXX: %s", err)
-    }
+	response, err := c.GetTime(context.Background(), &message)
+	if err != nil {
+		log.Fatalf("Error when calling GetTime: %s", err)
+	}
 
-    fmt.Printf("Response from the Server: %s \n", response.Reply)
+	fmt.Printf("Current time right now: %s\n", response.Reply)
 }
